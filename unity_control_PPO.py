@@ -42,10 +42,6 @@ parser.add_argument(
     type=str,
     default="Large_WPM_Obs",
     choices=[
-        "Large_Obs",
-        "Large_Obs_Dense",
-        "XL_Obs",
-        "XL_Obs_Dense",
         "Large_WPM_Obs",
         "Large_WPM_Obs_Dense",
         "XL_WPM_Obs",
@@ -159,8 +155,6 @@ if __name__ == "__main__":
         # Use GPUs iff `RLLIB_NUM_GPUS` env var set to > 0.
         .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
     )
-
-
 
 
 

@@ -129,9 +129,6 @@ class Unity3DEnv(MultiAgentEnv):
                     actions.append(action_dict[key])
 
 
-                # with open("C:\\Users\\ezhao\\PycharmProjects\\MARL_Test\\action_recored.txt","w+" ) as p:
-                #     for action in actions:
-                #         p.write(str(type(action)))
 
 
                 if actions:
@@ -188,8 +185,6 @@ class Unity3DEnv(MultiAgentEnv):
         self.episode_timesteps = 0
         self.unity_env.reset()
         obs, _, _, _, infos = self._get_step_results()
-        # print("From reset")
-        # print(obs)
         return obs, infos
 
     def _get_step_results(self):
@@ -324,6 +319,57 @@ class Unity3DEnv(MultiAgentEnv):
                 ]
 
             ),
+            
+
+
+            "XL_WPM_Obs": TupleSpace(
+                [
+                    Box(float("-inf"), float("inf"), (3, 6)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (36,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (11,))
+
+                ]
+
+            ),
+
+            
+            "XL_WPM_Obs_Dense": TupleSpace(
+                [
+                    Box(float("-inf"), float("inf"), (3, 6)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (36,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (11,))
+
+                ]
+
+            ),
 
         }
         action_spaces = {
@@ -341,50 +387,31 @@ class Unity3DEnv(MultiAgentEnv):
             "Large_Obs":  Box(-1.0,1.0,(3,),dtype=np.float32),
 
             # "Large_WPM_Obs": MultiDiscrete([9,]),
-            "Large_WPM_Obs":TupleSpace([Discrete(9),])
-
+            "Large_WPM_Obs":TupleSpace([Discrete(9),]),
+            "Large_WPM_Obs_Dense":TupleSpace([Discrete(9),]),
+            "XL_WPM_Obs":TupleSpace([Discrete(9),]),
+            "XL_WPM_Obs_Dense":TupleSpace([Discrete(9),])
 
         }
 
-        # Policies (Unity: "behaviors") and agent-to-policy mapping fns.
+        # Policies (Unity: "behaviors") and agent-to-policy mapping fns, our setting only applies for agents in two separate teams.
 
-
-
-
-        if game_name=="Large_Obs":
-            policies= {
+        policies= {
                 "PurplePlayer": PolicySpec(
-                    observation_space=obs_spaces["Large_Obs"],
-                    action_space=action_spaces["Large_Obs"],
+                    observation_space=obs_spaces[game_name],
+                    action_space=action_spaces[game_name],
                 ),
                 "BluePlayer": PolicySpec(
-                    observation_space=obs_spaces["Large_Obs"],
-                    action_space=action_spaces["Large_Obs"],
+                    observation_space=obs_spaces[game_name],
+                    action_space=action_spaces[game_name],
                 ),
 
             }
 
-            def policy_mapping_fn(agent_id, episode, worker, **kwargs):
-                print(agent_id)
-                return "BluePlayer" if "1_" in agent_id else "PurplePlayer"
-
-        elif game_name=="Large_WPM_Obs":
-            policies= {
-                "PurplePlayer": PolicySpec(
-                    observation_space=obs_spaces["Large_WPM_Obs"],
-                    action_space=action_spaces["Large_WPM_Obs"],
-                ),
-                "BluePlayer": PolicySpec(
-                    observation_space=obs_spaces["Large_WPM_Obs"],
-                    action_space=action_spaces["Large_WPM_Obs"],
-                ),
-
-            }
-
-            def policy_mapping_fn(agent_id, episode, worker, **kwargs):
-
-                return "BluePlayer" if "1_" in agent_id else "PurplePlayer"
-
+        def policy_mapping_fn(agent_id, episode, worker, **kwargs):
+            print(agent_id)
+            return "BluePlayer" if "1_" in agent_id else "PurplePlayer"
+        
 
 
         return policies, policy_mapping_fn
