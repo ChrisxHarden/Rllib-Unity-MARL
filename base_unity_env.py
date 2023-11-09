@@ -409,7 +409,7 @@ class Unity3DEnv(MultiAgentEnv):
             }
 
         def policy_mapping_fn(agent_id, episode, worker, **kwargs):
-            print(agent_id)
+            # print(agent_id)
             return "BluePlayer" if "1_" in agent_id else "PurplePlayer"
         
 
