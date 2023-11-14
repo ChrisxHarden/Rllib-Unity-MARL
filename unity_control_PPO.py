@@ -7,7 +7,11 @@ from ray.rllib.algorithms.ppo import PPOConfig
 # from ray.rllib.env.wrappers.unity3d_env import Unity3DEnv
 from base_unity_env import Unity3DEnv
 from ray.rllib.utils.test_utils import check_learning_achieved
-
+from ray.rllib.utils.replay_buffers.multi_agent_prioritized_replay_buffer import MultiAgentPrioritizedReplayBuffer
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
 
 ### parser adding arguments
 parser = argparse.ArgumentParser()
@@ -82,12 +86,85 @@ parser.add_argument(
     default="torch",
     help="The DL framework specifier.",
 )
+parser.add_argument(
+    "--address",
+    
+    default=None,
+    help="The ray address specifier.",
+)
+
+
+def gpu_test():
+
+
+    # Define a simple feedforward neural network
+    class SimpleModel(nn.Module):
+        def __init__(self, input_size, hidden_size, output_size):
+            super(SimpleModel, self).__init__()
+            self.fc1 = nn.Linear(input_size, hidden_size)
+            self.relu = nn.ReLU()
+            self.fc2 = nn.Linear(hidden_size, output_size)
+        
+        def forward(self, x):
+            x = self.fc1(x)
+            x = self.relu(x)
+            x = self.fc2(x)
+            return x
+
+   # Generate some random data for demonstration
+    input_size = 64
+    hidden_size = 128
+    output_size = 10
+    batch_size = 32
+    num_epochs = 10
+
+    # Create random input and target tensors (replace this with your data)
+    dummy_input = torch.randn(batch_size, input_size)
+    dummy_target = torch.randn(batch_size, output_size)
+
+    # Create DataLoader for the random data
+    dataset = TensorDataset(dummy_input, dummy_target)
+    data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+    # Check if a GPU is available and move the model to the GPU if possible
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = SimpleModel(input_size, hidden_size, output_size).to(device)
+
+    # Define loss and optimizer
+    criterion = nn.MSELoss()
+    optimizer = optim.SGD(model.parameters(), lr=0.01)
+
+    # Training loop
+    for epoch in range(num_epochs):
+        
+
+        total_loss = 0.0
+        for inputs, targets in data_loader:
+            inputs, targets = inputs.to(device), targets.to(device)
+            print("inputs on {}".format(device))
+
+            # Forward pass
+            outputs = model(inputs)
+            loss = criterion(outputs, targets)
+
+            # Backward pass and optimization
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+        
+        print(f"Epoch [{epoch + 1}/{num_epochs}] Loss: {total_loss / len(data_loader)}")
+
+
 
 if __name__ == "__main__":
    
-    ray.init()
-
+    os.environ["RAY_TMPDIR"] = "/tmp/my_tmp_dir"
     args = parser.parse_args()
+    ray.init(_temp_dir="/tmp/my_tmp_dir")
+
+    
 
     tune.register_env(
         "unity3d",
@@ -107,7 +184,7 @@ if __name__ == "__main__":
         .environment(
             "unity3d",
             env_config={
-                "file_name": args.file_name,
+                "file_name": args .file_name,
                 "episode_horizon": args.horizon,
             },
         )
@@ -117,6 +194,7 @@ if __name__ == "__main__":
         .rollouts(
             num_rollout_workers=args.num_workers if args.file_name else 0,
             rollout_fragment_length=500,
+            batch_mode="complete_episodes"
         )
         .training(
             lr=0.0003,
@@ -127,10 +205,15 @@ if __name__ == "__main__":
             num_sgd_iter=20,
             clip_param=0.2,
             model={"fcnet_hiddens": [512, 512]},
+            # replay_buffer_config={
+            #     "type":"MultiAgentPrioritizedReplayBuffer",
+            #     "storage_unit": "episodes"}
+
         )
         .multi_agent(policies=policies, policy_mapping_fn=policy_mapping_fn)
         # Use GPUs iff `RLLIB_NUM_GPUS` env var set to > 0.
-        .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
+        # .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
+        .resources(num_gpus=1,num_gpus_per_learner_worker=1)
     )
 
 
