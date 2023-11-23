@@ -213,7 +213,7 @@ if __name__ == "__main__":
         .multi_agent(policies=policies, policy_mapping_fn=policy_mapping_fn)
         # Use GPUs iff `RLLIB_NUM_GPUS` env var set to > 0.
         # .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
-        .resources(num_gpus=1,num_gpus_per_learner_worker=1)
+        .resources(num_gpus=1,num_gpus_per_learner_worker=1)   
     )
 
 
@@ -235,7 +235,7 @@ if __name__ == "__main__":
             stop=stop,
             verbose=1,
             checkpoint_config=air.CheckpointConfig(
-                checkpoint_frequency=5,
+                checkpoint_frequency=10,
                 checkpoint_at_end=True,
             ),
         ),

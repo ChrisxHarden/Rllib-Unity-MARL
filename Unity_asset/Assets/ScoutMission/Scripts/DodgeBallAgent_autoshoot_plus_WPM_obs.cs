@@ -30,7 +30,7 @@ public class DodgeBallAgent_autoshoot_plus_WPM_obs : DodgeBallAgent_autoshoot_pl
             sensor.AddObservation(GetRelativeCoordinates(m_HomeBasePosition)); // Location to base (usually spawn point)
             sensor.AddObservation(this.transform.rotation.y);
         }
-        if (IS_DEBUG) Debug.Log("A) CollectObservations=" + sensor.ObservationSize() + "; spec=" + sensor.GetObservationSpec().Shape + "; HP Obs=" + ((float)HitPointsRemaining / (float)NumberOfTimesPlayerCanBeHit) + "; ball One Hot=" + string.Join(",", ballOneHot) + "; relative coords=" + string.Join(",", GetRelativeCoordinates(m_HomeBasePosition)));
+        //Debug.Log("A) CollectObservations=" + sensor.ObservationSize() + "; spec=" + sensor.GetObservationSpec().Shape + "; HP Obs=" + ((float)HitPointsRemaining / (float)NumberOfTimesPlayerCanBeHit) + "; ball One Hot=" + string.Join(",", ballOneHot) + "; relative coords=" + string.Join(",", GetRelativeCoordinates(m_HomeBasePosition)));
 
         //Fetch team lists
         List<DodgeBallGameController_WP.PlayerInfo> teamList;
@@ -79,8 +79,9 @@ public class DodgeBallAgent_autoshoot_plus_WPM_obs : DodgeBallAgent_autoshoot_pl
 
         //Location to flag
         //sensor.AddObservation(GetRelativeCoordinates(currentFlagPosition));
-        if (IS_DEBUG) Debug.Log(StepCount + " B) CollectObservations=" + sensor.ObservationSize() + "; spec=" + sensor.GetObservationSpec().Shape + "; obs=" + string.Join(",", GetObservations()) + "; all obs=" + string.Join(",", GetObservations()));
-        if (IS_DEBUG) Debug.Log(gameObject.name + "\tObs=\t" + string.Join(",", GetObservations()));
+        Debug.Log(StepCount + " B) CollectObservations=" + sensor.ObservationSize() + "; spec=" + sensor.GetObservationSpec().Shape + "; obs=" + string.Join(",", GetObservations()) + "; all obs=" + string.Join(",", GetObservations()));
+        Debug.Log(gameObject.name + "\tObs=\t" + string.Join(",", GetObservations()));
+
 
     }
 

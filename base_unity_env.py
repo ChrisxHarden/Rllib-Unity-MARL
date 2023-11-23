@@ -296,43 +296,31 @@ class Unity3DEnv(MultiAgentEnv):
 
             ),
 
-            # "Large_WPM_Obs_Dense": TupleSpace(
-            #     [
-            #         Box(float("-inf"), float("inf"), (3, 6)),
-            #         Box(float("-inf"), float("inf"), (738,)),
-            #         Box(float("-inf"), float("inf"), (738,)),
-            #         Box(float("-inf"), float("inf"), (738,)),
-            #         Box(float("-inf"), float("inf"), (738,)),
-            #         Box(float("-inf"), float("inf"), (738,)),
-            #         Box(float("-inf"), float("inf"), (738,)),
-            #         Box(float("-inf"), float("inf"), (738,)),
-            #         Box(float("-inf"), float("inf"), (36,)),
-            #         Box(float("-inf"), float("inf"), (378,)),
-            #         Box(float("-inf"), float("inf"), (378,)),
-            #         Box(float("-inf"), float("inf"), (378,)),
-            #         Box(float("-inf"), float("inf"), (378,)),
-            #         Box(float("-inf"), float("inf"), (378,)),
-            #         Box(float("-inf"), float("inf"), (378,)),
-            #         Box(float("-inf"), float("inf"), (378,)),
-            #         Box(float("-inf"), float("inf"), (11,))
-
-            #     ]
-
-            # ),
-
-
             "Large_WPM_Obs_Dense": TupleSpace(
                 [
-                    Box(float("-inf"), float("inf"), (3, 8)),
+                    Box(-1, 1, (3, 6)), #possible wrong dimension(3,6)
                     Box(float("-inf"), float("inf"), (738,)),
-                    Box(float("-inf"), float("inf"), (252,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
+                    Box(float("-inf"), float("inf"), (738,)),
                     Box(float("-inf"), float("inf"), (36,)),
                     Box(float("-inf"), float("inf"), (378,)),
-                    Box(float("-inf"), float("inf"), (20,))
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(float("-inf"), float("inf"), (378,)),
+                    Box(-10, 10, (11,))
 
                 ]
 
             ),
+
+
             
 
 
