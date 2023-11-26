@@ -188,7 +188,7 @@ if __name__ == "__main__":
                 "episode_horizon": args.horizon,
             },
         )
-        .framework(args.framework)
+        .framework(args.framework,torch_compile_learner=True)
         # For running in editor, force to use just one Worker (we only have
         # one Unity running)!
         .rollouts(
@@ -205,6 +205,7 @@ if __name__ == "__main__":
             num_sgd_iter=20,
             clip_param=0.2,
             model={"fcnet_hiddens": [512, 512]},
+            _enable_learner_api=True
             # replay_buffer_config={
             #     "type":"MultiAgentPrioritizedReplayBuffer",
             #     "storage_unit": "episodes"}
@@ -213,7 +214,8 @@ if __name__ == "__main__":
         .multi_agent(policies=policies, policy_mapping_fn=policy_mapping_fn)
         # Use GPUs iff `RLLIB_NUM_GPUS` env var set to > 0.
         # .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
-        .resources(num_gpus=1,num_gpus_per_learner_worker=1)   
+        .resources(num_gpus=1,num_gpus_per_learner_worker=1)
+        #.resources(num_gpus=0)   
     )
 
 

@@ -298,7 +298,7 @@ class Unity3DEnv(MultiAgentEnv):
 
             "Large_WPM_Obs_Dense": TupleSpace(
                 [
-                    Box(-1, 1, (3, 6)), #possible wrong dimension(3,6)
+                    Box(float("-inf"), float("inf"), (3, 6)), #possible wrong dimension(3,6)
                     Box(float("-inf"), float("inf"), (738,)),
                     Box(float("-inf"), float("inf"), (738,)),
                     Box(float("-inf"), float("inf"), (738,)),
