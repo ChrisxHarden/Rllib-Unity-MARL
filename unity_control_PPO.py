@@ -211,9 +211,10 @@ if __name__ == "__main__":
 
         )
         .multi_agent(policies=policies, policy_mapping_fn=policy_mapping_fn)
+        .resources(num_gpus=0)
         # Use GPUs iff `RLLIB_NUM_GPUS` env var set to > 0.
         # .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
-        .resources(num_gpus=1,num_gpus_per_learner_worker=1)
+        #.resources(num_gpus=1,num_gpus_per_learner_worker=1)
     )
 
 
