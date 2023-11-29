@@ -65,7 +65,7 @@ parser.add_argument(
     "--stop-iters", type=int, default=9999, help="Number of iterations to train."
 )
 parser.add_argument(
-    "--stop-timesteps", type=int, default=10000000, help="Number of timesteps to train."
+    "--stop-timesteps", type=int, default=20000000, help="Number of timesteps to train."
 )
 parser.add_argument(
     "--stop-reward",
@@ -162,7 +162,7 @@ if __name__ == "__main__":
    
     os.environ["RAY_TMPDIR"] = "/tmp/my_tmp_dir"
     args = parser.parse_args()
-    ray.init(_temp_dir="/tmp/my_tmp_dir")
+    ray.init(_temp_dir=f"/tmp/my_tmp_dir",num_cpus=10,num_gpus=1,ignore_reinit_error=True)
 
     
 
@@ -193,7 +193,7 @@ if __name__ == "__main__":
         # one Unity running)!
         .rollouts(
             num_rollout_workers=args.num_workers if args.file_name else 0,
-            rollout_fragment_length=500,
+            rollout_fragment_length='auto',
             batch_mode="complete_episodes"
         )
         .training(
