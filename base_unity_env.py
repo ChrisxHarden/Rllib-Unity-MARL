@@ -314,7 +314,7 @@ class Unity3DEnv(MultiAgentEnv):
                     Box(float("-inf"), float("inf"), (378,)),
                     Box(float("-inf"), float("inf"), (378,)),
                     Box(float("-inf"), float("inf"), (378,)),
-                    Box(-10, 10, (11,))
+                    Box(float("-inf"), float("inf"), (11,))
 
                 ]
 
