@@ -1,0 +1,1 @@
+{"type": "Algorithm", "checkpoint_version": "1.2", "format": "cloudpickle", "state_file": "/home/ezhao/ray_results/PPO/PPO_unity3d_619a7_00000_0_2023-11-10_12-04-40/checkpoint_001865/algorithm_state.pkl", "policy_ids": ["PurplePlayer", "BluePlayer"], "ray_version": "2.6.3", "ray_commit": "8a434b4ee7cd48e60fa1531315d39901fac5d79e"}
